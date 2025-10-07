@@ -1,16 +1,19 @@
-// jsPsych初期化
+//jspsychの初期化
 const jsPsych = initJsPsych({
-  display_element: 'jspsych-target',
-  on_finish: function() {
-    jsPsych.data.displayData(); // 実験データを画面に表示
-  }
+  //htmlのbody内にあるidを指定している
+  display_element: 'jspsych-target', // bodyでもOKだが、明示すると管理しやすい
 });
 
-// タイムライン（1試行だけ）
-const hello_trial = {
+//一つ目の課題の作成
+const helloTrial = {
+  //htmlファイル内で読み込んだプラグインを指定
   type: jsPsychHtmlKeyboardResponse,
-  stimulus: '<p>スペースキーを押してください</p>',
-  choices: [' ']
+  //刺激の内容を記述
+  stimulus: `
+    <p style="font-size: 28px; margin: 40px 0;">Hello world!</p>
+    <p>なにかキーを押すと終了します。</p>
+  `,
 };
 
-jsPsych.run([hello_trial]);
+//課題の実行
+jsPsych.run([helloTrial]);

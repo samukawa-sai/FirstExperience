@@ -1,18 +1,28 @@
 <!doctype html>
 <html lang="ja">
 <head>
-  <meta charset="utf-8">
-  <title>Experiment1 - jsPsych Test</title>
-  <link rel="stylesheet" href="https://unpkg.com/jspsych@7.3.4/css/jspsych.css">
+  <meta charset="utf-8" />
+  <title>jsPsych Hello</title>
+  <!-- デフォルト(CDN)からcssの参照 -->
+  <link rel="stylesheet" href="https://unpkg.com/jspsych@8.2.2/css/jspsych.css">
 </head>
+
 <body>
   <div id="jspsych-target"></div>
 
-  <!-- jsPsych Core & Plugins -->
-  <script src="https://unpkg.com/jspsych@7.3.4/dist/jspsych.js"></script>
-  <script src="https://unpkg.com/@jspsych/plugin-html-keyboard-response@2.0.0"></script>
+  <!-- プラグインの参照 -->
+  <!-- １．基本のプラグイン -->
+  <script src="https://unpkg.com/jspsych@8.2.2"></script>
+  <!-- 2．キーボード操作 -->
+  <script src="https://unpkg.com/@jspsych/plugin-html-keyboard-response@2.1.0"></script>
+  <!-- 3．テキスト刺激 -->
+  <script src="https://unpkg.com/@jspsych/plugin-html-slider-response@2.1.0"></script>
+  <!-- 4．画像刺激 -->
+  <script src="https://unpkg.com/@jspsych/plugin-image-slider-response@2.1.0"></script>
+  <!-- 5．先に読み込み -->
+  <script src="https://unpkg.com/@jspsych/plugin-preload@2.1.0"></script>
 
-  <!-- 実験ロジック -->
+  <!-- jsファイルの参照 -->
   <script src="./app.js"></script>
 </body>
 </html>
