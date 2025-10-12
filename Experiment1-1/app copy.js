@@ -6,9 +6,9 @@ const jsPsych = initJsPsych({
 
 //一つ目の課題の作成
 const images = [
-  'tb0f.bmp',
-  'tb5f.bmp',
-  'tb10f.bmp',
+  'tb0f.jpeg',
+  'tb5f.jpeg',
+  'tb10f.jpeg',
 ];
 
 //プリロードの設定
