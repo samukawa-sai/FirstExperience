@@ -18,21 +18,29 @@ const preload = {
 };
 
 // 3) 画像提示 → 何かキーで次へ、のトライアルを4つ自動生成
-const imageTrials = images.map((path, i) => ({
-  type: jsPsychHtmlKeyboardResponse,
-  stimulus: `
-    <img src="${path}" 
-         style="max-width: 90vw; max-height: 80vh; display: block; margin: 0 auto;" />
-  `,
-  prompt: `
-    <p style="margin-top: 16px; text-align:center;">
-      何かキーを押すと${i === images.length - 1 ? '終了画面へ' : '次の画像へ'}
-    </p>
-  `,
-  choices: "ALL_KEYS",          // どのキーでもOK
-  // trial_duration: null,      // タイムアウトなし（必要ならms指定）
-  // post_trial_gap: 250,       // 次刺激までの間隔（必要ならms指定）
-}));
+const imageTrials = images.map((path, i) => {
+  let msg;
+  if (i === images.length - 1) {
+    msg = '終了画面へ';
+  } else {
+    msg = '次の画像へ';
+  }
+  return {
+    type: jsPsychHtmlKeyboardResponse,
+    stimulus: `
+      <img src="${path}" 
+           style="max-width: 90vw; max-height: 80vh; display: block; margin: 0 auto;" />
+    `,
+    prompt: `
+      <p style="margin-top: 16px; text-align:center;">
+        何かキーを押すと${msg}
+      </p>
+    `,
+    choices: ['a', 's', 'd'],          // どのキーでもOK
+    // trial_duration: null,      // タイムアウトなし（必要ならms指定）
+    // post_trial_gap: 250,       // 次刺激までの間隔（必要ならms指定）
+  };
+});
 
 // 4) 終了画面（最後にキーを押すと実験終了）
 const theEnd = {
