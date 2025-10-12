@@ -1,23 +1,40 @@
 //jspsychの初期化
 const jsPsych = initJsPsych({
-  //htmlのbody内にあるidを指定している
-  display_element: 'jspsych-target', // bodyでもOKだが、明示すると管理しやすい
+  display_element: 'jspsych-target',
 });
 
-//一つ目の課題の作成
+// 1) 受験者ID入力トライアル
+const idTrial = {
+  type: jsPsychHtmlKeyboardResponse,
+  stimulus: `
+    <p style="font-size: 24px; margin: 40px 0;">受験者IDを入力してください</p>
+    <input type="text" id="subject-id" style="font-size: 20px; width: 200px;">
+    <p>入力後、Enterキーを押してください</p>
+  `,
+  choices: ['Enter'],
+  on_finish: function(data) {
+    // 入力値を取得してデータに保存
+    const input = document.getElementById('subject-id');
+    if (input) {
+      jsPsych.data.addProperties({subject_id: input.value});
+    }
+  }
+};
+
+//画像ファイルリスト
 const images = [
   'tb0f.jpeg',
   'tb5f.jpeg',
   'tb10f.jpeg',
 ];
 
-//プリロードの設定
+//画像プリロード
 const preload = {
   type: jsPsychPreload,
   images,
 };
 
-// 3) 画像提示 → 何かキーで次へ、のトライアルを4つ自動生成
+// 2) 画像提示＋スライダー回答トライアル
 const imageTrials = images.map((path, i) => {
   let msg;
   if (i === images.length - 1) {
@@ -44,12 +61,10 @@ const imageTrials = images.map((path, i) => {
     `,
     button_label: '次へ',
     require_movement: true,
-    // trial_duration: null,      // タイムアウトなし（必要ならms指定）
-    // post_trial_gap: 250,       // 次刺激までの間隔（必要ならms指定）
   };
 });
 
-// 4) 終了画面（最後にキーを押すと実験終了）
+// 3) 終了画面
 const theEnd = {
   type: jsPsychHtmlKeyboardResponse,
   stimulus: `
@@ -57,6 +72,25 @@ const theEnd = {
     <p style="text-align:center;">何かキーを押すと終了します。</p>
   `,
 };
+// 実験の実行
+jsPsych.run([idTrial, preload, ...imageTrials, theEnd]);
 
-//課題の実行
-jsPsych.run([preload, ...imageTrials, theEnd]);
+// 終了時にCSVデータをサーバーへ送信
+jsPsych.on('finish', function() {
+  const csvData = jsPsych.data.get().csv();
+  fetch('http://localhost/save.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain' },
+    body: csvData
+  })
+  .then(response => {
+    if (response.ok) {
+      alert('データがサーバーに保存されました');
+    } else {
+      alert('データ保存に失敗しました');
+    }
+  })
+  .catch(() => {
+    alert('サーバー接続エラー');
+  });
+});
