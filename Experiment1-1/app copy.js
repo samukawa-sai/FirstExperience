@@ -26,17 +26,24 @@ const imageTrials = images.map((path, i) => {
     msg = '次の画像へ';
   }
   return {
-    type: jsPsychHtmlKeyboardResponse,
+    type: jsPsychHtmlSliderResponse,
     stimulus: `
       <img src="${path}" 
            style="max-width: 90vw; max-height: 80vh; display: block; margin: 0 auto;" />
     `,
+    labels: ['全くそう思わない', 'どちらともいえない', 'とてもそう思う'],
+    min: 0,
+    max: 100,
+    slider_start: 50,
+    step: 1,
     prompt: `
       <p style="margin-top: 16px; text-align:center;">
-        何かキーを押すと${msg}
+        スライダーで回答し、「次へ」ボタンを押してください。<br>
+        ${msg}
       </p>
     `,
-    choices: ['a', 's', 'd'],          // どのキーでもOK
+    button_label: '次へ',
+    require_movement: true,
     // trial_duration: null,      // タイムアウトなし（必要ならms指定）
     // post_trial_gap: 250,       // 次刺激までの間隔（必要ならms指定）
   };
